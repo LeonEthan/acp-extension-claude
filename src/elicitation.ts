@@ -14,7 +14,11 @@ import type {
   AskUserQuestionOutput,
 } from "@anthropic-ai/claude-agent-sdk/sdk-tools.js";
 import type { LodyElicitationMeta } from "acp-extension-core";
-import { AIR_CUSTOM_ANSWER_KEY, withAirMeta } from "./air-extension.js";
+import {
+  AIR_CUSTOM_ANSWER_KEY,
+  LEGACY_AIR_CUSTOM_ANSWER_KEY,
+  withAirMeta,
+} from "./air-extension.js";
 
 /**
  * Bridges between the Claude Agent SDK's elicitation/dialog callbacks and ACP's
@@ -212,6 +216,7 @@ export function askUserQuestionsToCreateRequest(
       ? { type: "array", title, description, items: { anyOf: options } }
       : { type: "string", title, description, oneOf: options };
 
+    const customAnswer = { questionId: questionFieldKey(index), isCustomAnswer: true };
     properties[questionCustomFieldKey(index)] = {
       type: "string",
       title: "Other",
@@ -219,17 +224,18 @@ export function askUserQuestionsToCreateRequest(
         ? "Type your own answer to add to your selection above (optional)."
         : "Type your own answer, or add a note to the option you chose above (optional).",
       // Marks the field as the custom answer companion of a select question,
-      // under `_meta.jetbrains.air.customAnswer`. Only AIR gets the marker.
+      // under `_meta.jetbrains.air.customAnswer` and under the root key that
+      // released AIR versions read. Only AIR gets the marker.
       _meta: lodyElicitationMeta({ customAnswerFor: questionFieldKey(index) }),
       ...(airClient
         ? {
             _meta: withAirMeta(
-              lodyElicitationMeta({ customAnswerFor: questionFieldKey(index) }),
-              AIR_CUSTOM_ANSWER_KEY,
               {
-                questionId: questionFieldKey(index),
-                isCustomAnswer: true,
+                ...lodyElicitationMeta({ customAnswerFor: questionFieldKey(index) }),
+                [LEGACY_AIR_CUSTOM_ANSWER_KEY]: customAnswer,
               },
+              AIR_CUSTOM_ANSWER_KEY,
+              customAnswer,
             ),
           }
         : {}),

@@ -51,6 +51,7 @@ import {
   withoutAirOnlyKeys,
 } from "./acp-scenarios/compare.js";
 import { EXTENSION_SESSION_UPDATES, validateRecorded } from "./acp-scenarios/schema.js";
+import { LEGACY_AIR_CUSTOM_ANSWER_KEY } from "../air-extension.js";
 
 vi.mock("@anthropic-ai/claude-agent-sdk", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@anthropic-ai/claude-agent-sdk")>();
@@ -709,6 +710,7 @@ describe.skipIf(baselineDir)("ACP scenarios", () => {
         (record) => record.kind === "createElicitation",
       )!.payload as Record<string, any>;
       expect(elicitation.requestedSchema.properties.question_0_custom._meta).toMatchObject({
+        _askUserQuestionCustomAnswer: { questionId: "question_0", isCustomAnswer: true },
         jetbrains: {
           air: { version: 1, customAnswer: { questionId: "question_0", isCustomAnswer: true } },
         },
@@ -732,7 +734,13 @@ describe.skipIf(baselineDir)("ACP scenarios", () => {
       for (const scenario of SCENARIOS) {
         for (const { at, meta } of metaObjects(air(scenario.name))) {
           const duplicates = [
-            ...Object.keys(meta).filter((k) => AIR_ONLY_META_KEYS.has(k) && k !== "jetbrains"),
+            // Released AIR versions read only the legacy custom answer key, so AIR gets both.
+            ...Object.keys(meta).filter(
+              (k) =>
+                AIR_ONLY_META_KEYS.has(k) &&
+                k !== "jetbrains" &&
+                k !== LEGACY_AIR_CUSTOM_ANSWER_KEY,
+            ),
             ...Object.keys((meta.claudeCode as Record<string, unknown> | undefined) ?? {}).filter(
               (k) => AIR_ONLY_CLAUDE_CODE_KEYS.has(k),
             ),

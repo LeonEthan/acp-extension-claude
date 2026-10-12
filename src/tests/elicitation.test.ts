@@ -301,7 +301,7 @@ describe("askUserQuestionsToCreateRequest", () => {
       mkQuestion("What else?", [{ label: "C" }, { label: "D" }]),
     ];
     const schema = (
-      askUserQuestionsToCreateRequest(questions, SESSION_ID, undefined, true) as Extract<
+      askUserQuestionsToCreateRequest(questions, SESSION_ID, undefined, true, true) as Extract<
         CreateElicitationRequest,
         { mode: "form" }
       >
@@ -318,6 +318,10 @@ describe("askUserQuestionsToCreateRequest", () => {
             customAnswerFor: "question_0",
           },
         },
+        _askUserQuestionCustomAnswer: { questionId: "question_0", isCustomAnswer: true },
+        jetbrains: {
+          air: { customAnswer: { questionId: "question_0", isCustomAnswer: true } },
+        },
       },
     });
     expect(schema.properties?.["question_1_custom"]).toMatchObject({
@@ -329,6 +333,10 @@ describe("askUserQuestionsToCreateRequest", () => {
             version: 1,
             customAnswerFor: "question_1",
           },
+        },
+        _askUserQuestionCustomAnswer: { questionId: "question_1", isCustomAnswer: true },
+        jetbrains: {
+          air: { customAnswer: { questionId: "question_1", isCustomAnswer: true } },
         },
       },
     });

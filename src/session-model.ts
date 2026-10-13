@@ -299,7 +299,7 @@ export function isDeniedModel(modelId: string, deniedModels: readonly string[]):
  * The user's exact entries become the model IDs surfaced via configOptions
  * and passed to `setModel`, which prevents Claude Code from silently
  * substituting a date-pinned variant (e.g. `haiku` →
- * `claude-haiku-4-5-20251001`) that the user may not have access to.
+ * `claude-haiku-5-5`) that the user may not have access to.
  *
  * Display info and capability flags are copied from the closest SDK match so
  * the UI still renders sensible names and effort levels.

@@ -826,7 +826,7 @@ If the adapter cannot map the recommendation to a named model, it keeps the `def
 The client then never gets a value that it cannot select.
 
 Short SDK labels that match their model family get the concrete version from the model metadata.
-For example, `Sonnet` becomes `Sonnet 5`, and `Claude Haiku` becomes `Claude Haiku 4.5`.
+For example, `Sonnet` becomes `Sonnet 5`, and `Claude Haiku` becomes `Claude Haiku 5.5`.
 The adapter omits a context suffix such as `(1M context)` from the label, because the description keeps it.
 Custom labels stay unchanged.
 If two entries would get the same label, the adapter keeps the original labels.

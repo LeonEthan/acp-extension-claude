@@ -42,7 +42,7 @@ describe("resumedModelFromTranscript", () => {
     expect(
       resumedModelFromTranscript([
         assistant("claude-opus-5"),
-        assistant("claude-haiku-4-5", {
+        assistant("claude-haiku-5-5", {
           parent_tool_use_id: "task-tool-use",
           parent_agent_id: null,
         }),
@@ -61,7 +61,7 @@ describe("usageBaselineFromTranscript", () => {
     sessionId: "session-id",
     totalCostUSD: 0.03,
     modelUsage: {
-      "claude-haiku-4-5": {
+      "claude-haiku-5-5": {
         inputTokens,
         outputTokens: 100,
         thinkingTokens: 72,
@@ -138,7 +138,7 @@ describe("readResumedTail", () => {
       record("claude-opus-5"),
       ...Array.from({ length: 3000 }, () => userLine("x".repeat(1000))),
       record("<synthetic>"),
-      record("claude-haiku-4-5", { isSidechain: true }),
+      record("claude-haiku-5-5", { isSidechain: true }),
     ]);
 
     expect((await readResumedTail("long")).model).toBe("claude-opus-5");

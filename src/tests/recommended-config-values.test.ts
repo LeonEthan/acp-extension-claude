@@ -51,7 +51,7 @@ const MODEL_INFOS: ModelInfo[] = [
     value: "haiku",
     displayName: "Claude Haiku",
     description: "Fastest",
-    resolvedModel: "claude-haiku-4-5",
+    resolvedModel: "claude-haiku-5-5",
   },
 ];
 

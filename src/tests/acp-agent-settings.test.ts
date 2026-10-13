@@ -625,7 +625,7 @@ describe("ClaudeAcpAgent settings", () => {
 
       mockQueryWithModels([
         {
-          value: "claude-haiku-4-5",
+          value: "claude-haiku-5-5",
           displayName: "Claude Haiku",
           description: "Fast",
           // supportsAutoMode intentionally omitted
@@ -714,7 +714,7 @@ describe("ClaudeAcpAgent settings", () => {
 
       const { getCapturedOptions, setPermissionModeSpy } = mockQueryWithModels([
         {
-          value: "claude-haiku-4-5",
+          value: "claude-haiku-5-5",
           displayName: "Claude Haiku",
           description: "Fast",
           // supportsAutoMode intentionally omitted
@@ -745,7 +745,7 @@ describe("ClaudeAcpAgent settings", () => {
 
         // A descriptive warning was logged so operators see the clamp.
         const messages = errorSpy.mock.calls.map((c) => c.join(" "));
-        expect(messages.some((m) => m.includes("auto") && m.includes("claude-haiku-4-5"))).toBe(
+        expect(messages.some((m) => m.includes("auto") && m.includes("claude-haiku-5-5"))).toBe(
           true,
         );
       } finally {
@@ -803,7 +803,7 @@ describe("ClaudeAcpAgent settings", () => {
     it("restricts configOptions to the user's allowlist using their exact IDs", async () => {
       // Reproduces the scenario from
       // https://github.com/agentclientprotocol/claude-agent-acp/issues/620:
-      // user lists `claude-haiku-4-5` (no date pin) in availableModels, but
+      // user lists `claude-haiku-5-5` (no date pin) in availableModels, but
       // the SDK still surfaces its `haiku` alias which resolves to a
       // date-pinned variant the user doesn't have access to.
       await fs.promises.writeFile(
@@ -812,7 +812,7 @@ describe("ClaudeAcpAgent settings", () => {
           availableModels: [
             "claude-sonnet-4-6[1m]",
             "claude-opus-4-6[1m]",
-            "claude-haiku-4-5",
+            "claude-haiku-5-5",
             "claude-opus-4-7[1m]",
           ],
         }),
@@ -850,7 +850,7 @@ describe("ClaudeAcpAgent settings", () => {
         "default",
         "claude-sonnet-4-6[1m]",
         "claude-opus-4-6[1m]",
-        "claude-haiku-4-5",
+        "claude-haiku-5-5",
         "claude-opus-4-7[1m]",
       ]);
     });
@@ -859,7 +859,7 @@ describe("ClaudeAcpAgent settings", () => {
       // https://code.claude.com/docs/en/model-config#merge-behavior
       await fs.promises.writeFile(
         path.join(tempDir, "settings.json"),
-        JSON.stringify({ availableModels: ["claude-haiku-4-5"] }),
+        JSON.stringify({ availableModels: ["claude-haiku-5-5"] }),
       );
 
       const projectDir = path.join(tempDir, "project");
@@ -867,7 +867,7 @@ describe("ClaudeAcpAgent settings", () => {
       await fs.promises.writeFile(
         path.join(projectDir, ".claude", "settings.json"),
         JSON.stringify({
-          availableModels: ["claude-haiku-4-5", "claude-opus-4-7[1m]"],
+          availableModels: ["claude-haiku-5-5", "claude-opus-4-7[1m]"],
         }),
       );
 
@@ -889,7 +889,7 @@ describe("ClaudeAcpAgent settings", () => {
       // User and project entries are unioned and deduplicated.
       expect(modelOption.options.map((o: any) => o.value)).toEqual([
         "default",
-        "claude-haiku-4-5",
+        "claude-haiku-5-5",
         "claude-opus-4-7[1m]",
       ]);
     });
@@ -945,14 +945,14 @@ describe("ClaudeAcpAgent settings", () => {
 
     it("passes the user's exact ID to setModel when it matches an SDK alias", async () => {
       // Without the allowlist, the SDK would resolve `haiku` to a
-      // date-pinned variant. Forcing setModel to receive `claude-haiku-4-5`
+      // date-pinned variant. Forcing setModel to receive `claude-haiku-5-5`
       // is exactly what the issue's workaround
       // (`ANTHROPIC_DEFAULT_HAIKU_MODEL`) achieves manually.
       await fs.promises.writeFile(
         path.join(tempDir, "settings.json"),
         JSON.stringify({
-          availableModels: ["claude-haiku-4-5"],
-          model: "claude-haiku-4-5",
+          availableModels: ["claude-haiku-5-5"],
+          model: "claude-haiku-5-5",
         }),
       );
 
@@ -973,9 +973,9 @@ describe("ClaudeAcpAgent settings", () => {
         _meta: { disableBuiltInTools: true },
       });
 
-      expect(setModelSpy).toHaveBeenCalledWith("claude-haiku-4-5");
+      expect(setModelSpy).toHaveBeenCalledWith("claude-haiku-5-5");
       expect(response.configOptions?.find((o: any) => o.id === "model")?.currentValue).toBe(
-        "claude-haiku-4-5",
+        "claude-haiku-5-5",
       );
     });
 
@@ -1120,7 +1120,7 @@ describe("ClaudeAcpAgent settings", () => {
           { value: "default", displayName: "Default", description: "Default model" },
           { value: "sonnet", displayName: "Sonnet", description: "Claude Sonnet 4.6" },
           { value: "opus", displayName: "Opus", description: "Claude Opus 4.6" },
-          { value: "haiku", displayName: "Haiku", description: "Claude Haiku 4.5" },
+          { value: "haiku", displayName: "Haiku", description: "Claude Haiku 5.5" },
           {
             value: "claude-opus-4-8[1m]",
             displayName: "Opus 4.8",
@@ -1354,14 +1354,14 @@ describe("ClaudeAcpAgent settings", () => {
 
   it("still calls setModel when the allowlist synthesizes a value the SDK has not surfaced", async () => {
     // The allowlist may rewrite a model's `value` to the user's literal ID
-    // (e.g., `claude-haiku-4-5`) even when the SDK only exposed an alias
+    // (e.g., `claude-haiku-5-5`) even when the SDK only exposed an alias
     // (`haiku`). In that case the SDK has not independently arrived at the
     // user's preferred ID, so we must sync via setModel.
     await fs.promises.writeFile(
       path.join(tempDir, "settings.json"),
       JSON.stringify({
-        availableModels: ["claude-haiku-4-5"],
-        model: "claude-haiku-4-5",
+        availableModels: ["claude-haiku-5-5"],
+        model: "claude-haiku-5-5",
       }),
     );
 
@@ -1390,9 +1390,9 @@ describe("ClaudeAcpAgent settings", () => {
       _meta: { disableBuiltInTools: true },
     });
 
-    expect(setModelSpy).toHaveBeenCalledWith("claude-haiku-4-5");
+    expect(setModelSpy).toHaveBeenCalledWith("claude-haiku-5-5");
     expect(response.configOptions?.find((o: any) => o.id === "model")?.currentValue).toBe(
-      "claude-haiku-4-5",
+      "claude-haiku-5-5",
     );
   });
 });

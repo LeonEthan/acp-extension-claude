@@ -1271,7 +1271,7 @@ describe("session config options", () => {
           supportsAutoMode: true,
         },
         {
-          value: "claude-haiku-4-5",
+          value: "claude-haiku-5-5",
           displayName: "Claude Haiku",
           description: "Fast",
           supportsEffort: true,
@@ -1284,7 +1284,7 @@ describe("session config options", () => {
         availableModels: [
           { modelId: "claude-opus-4-5", name: "Claude Opus", description: "Most capable" },
           { modelId: "claude-sonnet-4-6", name: "Claude Sonnet", description: "Balanced" },
-          { modelId: "claude-haiku-4-5", name: "Claude Haiku", description: "Fast" },
+          { modelId: "claude-haiku-5-5", name: "Claude Haiku", description: "Fast" },
         ],
       };
       session.modes = {
@@ -1354,7 +1354,7 @@ describe("session config options", () => {
       const response = await agent.setSessionConfigOption({
         sessionId: SESSION_ID,
         configId: "model",
-        value: "claude-haiku-4-5",
+        value: "claude-haiku-5-5",
       });
 
       const modeOption = response.configOptions.find((o) => o.id === "mode");
@@ -1369,7 +1369,7 @@ describe("session config options", () => {
     it("keeps the same mode catalog when switching from Haiku back to Opus", async () => {
       const session = setupHaikuOpusSession("default");
       // Pretend Haiku is the current model; its catalog still advertises Auto.
-      session.models.currentModelId = "claude-haiku-4-5";
+      session.models.currentModelId = "claude-haiku-5-5";
 
       const response = await agent.setSessionConfigOption({
         sessionId: SESSION_ID,
@@ -1396,7 +1396,7 @@ describe("session config options", () => {
       const response = await agent.setSessionConfigOption({
         sessionId: SESSION_ID,
         configId: "model",
-        value: "claude-haiku-4-5",
+        value: "claude-haiku-5-5",
       });
 
       // `plan` is in availableModes for both Opus and Haiku, so no clamp.
@@ -1421,7 +1421,7 @@ describe("session config options", () => {
       const response = await agent.setSessionConfigOption({
         sessionId: SESSION_ID,
         configId: "model",
-        value: "claude-haiku-4-5",
+        value: "claude-haiku-5-5",
       });
 
       expect(setPermissionModeSpy).toHaveBeenCalledWith("acceptEdits");

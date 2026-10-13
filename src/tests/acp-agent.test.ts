@@ -3506,7 +3506,7 @@ describe("subagent transcript replay", () => {
             message: {
               id: "m3",
               role: "assistant",
-              model: "claude-haiku-4-5",
+              model: "claude-haiku-5-5",
               content: [{ type: "text", text: "Child report." }],
             },
           },
@@ -12035,7 +12035,7 @@ describe("usage_update computation", () => {
     injectSession(agent, [
       createResultMessageWithModel({
         modelUsage: {
-          "claude-haiku-4-5-20251001": {
+          "claude-haiku-5-5": {
             inputTokens: 100,
             outputTokens: 50,
             cacheReadInputTokens: 0,
@@ -12195,7 +12195,7 @@ describe("usage_update computation", () => {
       createStreamEvent(
         "message_start",
         {
-          model: "claude-haiku-4-5-20251001",
+          model: "claude-haiku-5-5",
           usage: {
             input_tokens: 500,
             output_tokens: 100,
@@ -12207,7 +12207,7 @@ describe("usage_update computation", () => {
       ),
       createResultMessageWithModel({
         modelUsage: {
-          "claude-haiku-4-5-20251001": {
+          "claude-haiku-5-5": {
             inputTokens: 500,
             outputTokens: 100,
             cacheReadInputTokens: 0,
@@ -12359,7 +12359,7 @@ describe("usage_update computation", () => {
         uuid: randomUUID(),
         session_id: "test-session",
         message: {
-          model: "claude-haiku-4-5-20251001",
+          model: "claude-haiku-5-5",
           content: [{ type: "text", text: "subagent response" }],
           usage: {
             input_tokens: 50,
@@ -12381,7 +12381,7 @@ describe("usage_update computation", () => {
             contextWindow: 1000000,
             maxOutputTokens: 16384,
           },
-          "claude-haiku-4-5-20251001": {
+          "claude-haiku-5-5": {
             inputTokens: 50,
             outputTokens: 25,
             cacheReadInputTokens: 0,
@@ -21708,7 +21708,7 @@ describe("prompt response quota metadata (_meta.quota)", () => {
               cacheReadInputTokens: 3,
               cacheCreationInputTokens: 2,
             }),
-            "claude-haiku-4-5": modelRow({ inputTokens: 4, outputTokens: 1 }),
+            "claude-haiku-5-5": modelRow({ inputTokens: 4, outputTokens: 1 }),
           },
         });
         yield idle();
@@ -21727,7 +21727,7 @@ describe("prompt response quota metadata (_meta.quota)", () => {
             { inputTokens: 10, outputTokens: 5, cachedReadTokens: 3, cachedWriteTokens: 2 },
           ],
           [
-            "claude-haiku-4-5",
+            "claude-haiku-5-5",
             { inputTokens: 4, outputTokens: 1, cachedReadTokens: 0, cachedWriteTokens: 0 },
           ],
         ],
@@ -21949,7 +21949,7 @@ describe("prompt response quota metadata (_meta.quota)", () => {
             },
             modelUsage: {
               "claude-opus-5[1m]": modelRow({ inputTokens: 510, outputTokens: 205 }),
-              "claude-haiku-4-5": modelRow({ inputTokens: 900, outputTokens: 300 }),
+              "claude-haiku-5-5": modelRow({ inputTokens: 900, outputTokens: 300 }),
             },
           });
           yield idle();
@@ -21965,7 +21965,7 @@ describe("prompt response quota metadata (_meta.quota)", () => {
             },
             modelUsage: {
               "claude-opus-5[1m]": modelRow({ inputTokens: 525, outputTokens: 212 }),
-              "claude-haiku-4-5": modelRow({ inputTokens: 900, outputTokens: 300 }),
+              "claude-haiku-5-5": modelRow({ inputTokens: 900, outputTokens: 300 }),
             },
           });
           yield idle();

@@ -803,16 +803,19 @@ describe("ClaudeAcpAgent settings", () => {
     it("restricts configOptions to the user's allowlist using their exact IDs", async () => {
       // Reproduces the scenario from
       // https://github.com/agentclientprotocol/claude-agent-acp/issues/620:
-      // user lists `claude-haiku-5-5` (no date pin) in availableModels, but
+      // user lists `claude-haiku-4-5` (no date pin) in availableModels, but
       // the SDK still surfaces its `haiku` alias which resolves to a
-      // date-pinned variant the user doesn't have access to.
+      // date-pinned variant (`claude-haiku-4-5-20251001`) the user doesn't
+      // have access to. Keep this fixture on the dated 4.5 family so the
+      // regression still exercises that substitution; current-default 5.5
+      // IDs are covered elsewhere.
       await fs.promises.writeFile(
         path.join(tempDir, "settings.json"),
         JSON.stringify({
           availableModels: [
             "claude-sonnet-4-6[1m]",
             "claude-opus-4-6[1m]",
-            "claude-haiku-5-5",
+            "claude-haiku-4-5",
             "claude-opus-4-7[1m]",
           ],
         }),
@@ -850,7 +853,7 @@ describe("ClaudeAcpAgent settings", () => {
         "default",
         "claude-sonnet-4-6[1m]",
         "claude-opus-4-6[1m]",
-        "claude-haiku-5-5",
+        "claude-haiku-4-5",
         "claude-opus-4-7[1m]",
       ]);
     });
@@ -945,14 +948,15 @@ describe("ClaudeAcpAgent settings", () => {
 
     it("passes the user's exact ID to setModel when it matches an SDK alias", async () => {
       // Without the allowlist, the SDK would resolve `haiku` to a
-      // date-pinned variant. Forcing setModel to receive `claude-haiku-5-5`
-      // is exactly what the issue's workaround
+      // date-pinned variant (e.g. `claude-haiku-4-5-20251001`). Forcing
+      // setModel to receive the user's unpinned ID `claude-haiku-4-5` is
+      // exactly what the issue's workaround
       // (`ANTHROPIC_DEFAULT_HAIKU_MODEL`) achieves manually.
       await fs.promises.writeFile(
         path.join(tempDir, "settings.json"),
         JSON.stringify({
-          availableModels: ["claude-haiku-5-5"],
-          model: "claude-haiku-5-5",
+          availableModels: ["claude-haiku-4-5"],
+          model: "claude-haiku-4-5",
         }),
       );
 
@@ -973,9 +977,9 @@ describe("ClaudeAcpAgent settings", () => {
         _meta: { disableBuiltInTools: true },
       });
 
-      expect(setModelSpy).toHaveBeenCalledWith("claude-haiku-5-5");
+      expect(setModelSpy).toHaveBeenCalledWith("claude-haiku-4-5");
       expect(response.configOptions?.find((o: any) => o.id === "model")?.currentValue).toBe(
-        "claude-haiku-5-5",
+        "claude-haiku-4-5",
       );
     });
 

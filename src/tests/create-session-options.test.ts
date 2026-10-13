@@ -929,7 +929,7 @@ describe("createSession options merging", () => {
           value: "haiku",
           displayName: "Haiku",
           description: "Fast",
-          resolvedModel: "claude-haiku-4-5",
+          resolvedModel: "claude-haiku-5-5",
         },
       ];
       sessionMessages = [
@@ -939,7 +939,7 @@ describe("createSession options merging", () => {
           session_id: "resumed-model-probe",
           parent_tool_use_id: null,
           parent_agent_id: null,
-          message: { model: "claude-haiku-4-5", role: "assistant", content: [] },
+          message: { model: "claude-haiku-5-5", role: "assistant", content: [] },
         },
       ];
 
@@ -984,7 +984,7 @@ describe("createSession options merging", () => {
           value: "haiku",
           displayName: "Haiku",
           description: "Fast",
-          resolvedModel: "claude-haiku-4-5",
+          resolvedModel: "claude-haiku-5-5",
         },
       ];
       sessionMessages = [
@@ -994,7 +994,7 @@ describe("createSession options merging", () => {
           session_id: "direct-resume-probe",
           parent_tool_use_id: null,
           parent_agent_id: null,
-          message: { model: "claude-haiku-4-5", role: "assistant", content: [] },
+          message: { model: "claude-haiku-5-5", role: "assistant", content: [] },
         },
       ];
 

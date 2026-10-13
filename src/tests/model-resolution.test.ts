@@ -34,9 +34,9 @@ const LIVE_SHAPED_MODELS: ModelInfo[] = [
   },
   {
     value: "haiku",
-    resolvedModel: "claude-haiku-4-5-20251001",
+    resolvedModel: "claude-haiku-5-5",
     displayName: "Haiku",
-    description: "Haiku 4.5 · Fastest for quick answers",
+    description: "Haiku 5.5 · Fastest for quick answers",
   },
 ];
 
@@ -46,7 +46,7 @@ describe("resolveModelPreference - resolvedModel matching", () => {
     expect(resolveModelPreference(LIVE_SHAPED_MODELS, "claude-opus-4-8[1m]")?.value).toBe(
       "opus[1m]",
     );
-    expect(resolveModelPreference(LIVE_SHAPED_MODELS, "claude-haiku-4-5-20251001")?.value).toBe(
+    expect(resolveModelPreference(LIVE_SHAPED_MODELS, "claude-haiku-5-5")?.value).toBe(
       "haiku",
     );
   });
@@ -184,7 +184,7 @@ describe("matchResumedModel", () => {
 
   it("still resolves non-default live models against the picker entries", () => {
     expect(matchResumedModel(LIVE_SHAPED_MODELS, "claude-sonnet-5").value).toBe("sonnet");
-    expect(matchResumedModel(LIVE_SHAPED_MODELS, "claude-haiku-4-5-20251001").value).toBe("haiku");
+    expect(matchResumedModel(LIVE_SHAPED_MODELS, "claude-haiku-5-5").value).toBe("haiku");
   });
 
   it("tracks a live model with no picker counterpart verbatim", () => {
@@ -271,7 +271,7 @@ describe("isDeniedModel", () => {
   });
 
   it("blocks a whole family for a family alias and ignores settings-dependent aliases", () => {
-    expect(isDeniedModel("claude-haiku-4-5-20251001", ["haiku"])).toBe(true);
+    expect(isDeniedModel("claude-haiku-5-5", ["haiku"])).toBe(true);
     expect(isDeniedModel("haiku", ["haiku"])).toBe(true);
     expect(isDeniedModel("claude-sonnet-5", ["haiku"])).toBe(false);
     expect(isDeniedModel("claude-opus-5", ["default", "best", "opusplan"])).toBe(false);

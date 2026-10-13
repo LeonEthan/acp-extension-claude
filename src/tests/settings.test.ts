@@ -73,7 +73,7 @@ describe("SettingsManager", () => {
       await fs.promises.writeFile(
         path.join(claudeDir, "settings.json"),
         JSON.stringify({
-          availableModels: ["claude-haiku-4-5", "claude-opus-4-7[1m]"],
+          availableModels: ["claude-haiku-5-5", "claude-opus-4-7[1m]"],
         }),
       );
 
@@ -81,7 +81,7 @@ describe("SettingsManager", () => {
       await settingsManager.initialize();
 
       const settings = settingsManager.getSettings();
-      expect(settings.availableModels).toEqual(["claude-haiku-4-5", "claude-opus-4-7[1m]"]);
+      expect(settings.availableModels).toEqual(["claude-haiku-5-5", "claude-opus-4-7[1m]"]);
     });
 
     it("should union and dedupe availableModels across sources", async () => {
@@ -95,7 +95,7 @@ describe("SettingsManager", () => {
       await fs.promises.writeFile(
         path.join(claudeDir, "settings.json"),
         JSON.stringify({
-          availableModels: ["claude-haiku-4-5", "claude-opus-4-7[1m]"],
+          availableModels: ["claude-haiku-5-5", "claude-opus-4-7[1m]"],
         }),
       );
       await fs.promises.writeFile(
@@ -111,7 +111,7 @@ describe("SettingsManager", () => {
 
       const settings = settingsManager.getSettings();
       expect(settings.availableModels).toEqual([
-        "claude-haiku-4-5",
+        "claude-haiku-5-5",
         "claude-opus-4-7[1m]",
         "claude-sonnet-4-6[1m]",
       ]);

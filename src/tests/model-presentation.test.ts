@@ -59,7 +59,7 @@ describe("versioned model display names", () => {
       },
       {
         value: "haiku",
-        resolvedModel: "claude-haiku-4-5-20251001",
+        resolvedModel: "claude-haiku-5-5",
         displayName: "Claude Haiku",
         description: "Fast",
       },
@@ -91,7 +91,7 @@ describe("versioned model display names", () => {
 
     expect(state.availableModels.map((model) => model.name)).toEqual([
       "Sonnet 5",
-      "Claude Haiku 4.5",
+      "Claude Haiku 5.5",
       "Fable 5.1",
       "Opus 5 (1M context)",
       "My Sonnet",
